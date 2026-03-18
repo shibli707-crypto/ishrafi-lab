@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="إشراف مختبرات">
+<meta name="theme-color" content="#1B3A6B">
+<meta name="description" content="نظام دعم القرار الإشرافي لمختبرات العلوم 2025/2026">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>استمارة الزيارة الإشرافية — فني مختبر علوم</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+:root{
+  --navy:#1B3A6B;--navy2:#2554A0;--navy-light:#E8EEF8;
+  --teal:#0D7A5F;--teal2:#12A67F;--teal-light:#E0F5EE;
+  --amber:#C4830A;--amber-light:#FEF3DC;
+  --coral:#C0392B;--coral-light:#FDECEA;
+  --purple:#6B3FA0;--purple-light:#F0E8FA;
+  --green:#2E7D32;--green-light:#E8F5E9;
+  --sky:#0277BD;--sky-light:#E1F2FB;
+  --rose:#AD1457;--rose-light:#FCE4EC;
+  --gold:#F9A825;
+  --bg:#F4F6FB;--bg2:#FFFFFF;--bg3:#EEF1F8;
+  --text:#1A2233;--text2:#4A5568;--text3:#8896AB;
+  --border:#D5DCE8;--border2:#B8C4D8;
+  --shadow:0 2px 8px rgba(27,58,107,.08);
+  --shadow-md:0 6px 24px rgba(27,58,107,.13);
+  --r:10px;--r-lg:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  color:#fff;padding:0 28px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 3px 16px rgba(27,58,107,.35);
+}
+.tb-brand{display:flex;align-items:center;gap:14px}
+.tb-logo{
+  width:44px;height:44px;border-radius:10px;
+  background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.tb-title{font-size:16px;font-weight:700;letter-spacing:.3px}
+.tb-sub{font-size:11px;opacity:.75;margin-top:2px}
+.tb-meta{font-size:11px;opacity:.65;text-align:left}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:calc(100vh - 68px)}
+.sidebar{
+  width:230px;background:var(--bg2);border-left:1px solid var(--border);
+  padding:22px 0;flex-shrink:0;
+  position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto;
+}
+.sb-sec{padding:0 14px;margin-bottom:22px}
+.sb-lbl{
+  font-size:10px;font-weight:700;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.08em;
+  padding:0 10px;margin-bottom:8px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:var(--r);cursor:pointer;
+  font-size:13px;color:var(--text2);transition:all .18s;margin-bottom:3px;
+}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--navy-light);color:var(--navy);font-weight:600}
+.nav-item.active .nav-ico{background:var(--navy);color:#fff}
+.nav-ico{
+  width:28px;height:28px;border-radius:7px;
+  background:var(--bg3);display:flex;align-items:center;
+  justify-content:center;font-size:14px;flex-shrink:0;transition:all .18s;
+}
+.prog-wrap{padding:0 22px;margin-top:4px}
+.prog-lbl{font-size:11px;color:var(--text3);display:flex;justify-content:space-between;margin-bottom:6px}
+.prog-bar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal2),var(--navy2));border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* ── MAIN ── */
+.main{flex:1;padding:28px;max-width:860px}
+.screen{display:none}.screen.active{display:block}
+.page-title{
+  font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;
+  display:flex;align-items:center;gap:10px;
+}
+.page-sub{font-size:12px;color:var(--text3);margin-bottom:22px}
+
+/* ── CARDS ── */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:22px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.card-head{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.card-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.card-title{font-size:13px;font-weight:700;color:var(--navy)}
+.card-sub{font-size:11px;color:var(--text3);margin-top:1px}
+
+/* ── FORM ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fr{margin-bottom:2px}
+.fl{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:5px;display:block}
+.fi{
+  width:100%;padding:9px 13px;
+  border:1.5px solid var(--border);border-radius:var(--r);
+  font-size:13px;color:var(--text);background:var(--bg2);
+  font-family:inherit;transition:all .18s;
+}
+.fi:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px rgba(37,84,160,.1)}
+textarea.fi{resize:vertical;min-height:70px}
+
+/* ── BND ── */
+.bnd{
+  border:1.5px solid var(--border);border-radius:var(--r-lg);
+  margin-bottom:12px;overflow:hidden;background:var(--bg2);
+  box-shadow:var(--shadow);transition:border-color .2s;
+}
+.bnd:has(.bbody.open){border-color:var(--navy2)}
+.bnd-hdr{
+  padding:14px 18px;cursor:pointer;
+  display:flex;align-items:center;gap:12px;background:var(--bg2);
+  transition:background .18s;
+}
+.bnd-hdr:hover{background:var(--bg3)}
+.bnd-icon{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.bnd-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--bg3);color:var(--text2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+}
+.bnd-info{flex:1}
+.bnd-title{font-size:13px;font-weight:700;color:var(--text)}
+.bnd-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.bnd-right{display:flex;align-items:center;gap:8px}
+.bchv{font-size:12px;color:var(--text3);transition:transform .22s;flex-shrink:0}
+.bchv.open{transform:rotate(180deg)}
+.badge{
+  font-size:11px;padding:3px 11px;border-radius:20px;
+  font-weight:600;flex-shrink:0;white-space:nowrap;
+  border:1px solid transparent;
+}
+.b0{background:var(--bg3);color:var(--text3);border-color:var(--border)}
+.b1{background:#E0F5EE;color:#085041;border-color:#1D9E75}
+.b2{background:#EAF5DE;color:#27500A;border-color:#5A9A28}
+.b3{background:#FEF3DC;color:#7A4A00;border-color:#C4830A}
+.b4{background:#FDECEA;color:#7A1A10;border-color:#C0392B}
+.b5{background:#FDEAEA;color:#5A0A0A;border-color:#A32D2D}
+
+.bbody{display:none;padding:0 18px 18px;border-top:1.5px solid var(--border)}
+.bbody.open{display:block}
+
+/* ── SECTION LABELS ── */
+.sec-lbl{
+  font-size:11px;font-weight:700;color:var(--text2);
+  display:flex;align-items:center;gap:7px;
+  margin:16px 0 8px;text-transform:uppercase;letter-spacing:.04em;
+}
+.sec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── CHIPS ── */
+.chips-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--bg2);
+  cursor:pointer;font-size:11px;color:var(--text2);
+  transition:all .18s;user-select:none;font-family:inherit;
+}
+.chip:hover{border-color:var(--border2);background:var(--bg3)}
+.chip.sel-ind{
+  background:#E8EEF8;border-color:var(--navy2);
+  color:var(--navy);font-weight:600;
+}
+.chip.sel-ev{
+  background:var(--teal-light);border-color:var(--teal2);
+  color:var(--teal);font-weight:600;
+}
+.chip-ico{font-size:11px;line-height:1}
+
+/* ── CUSTOM EV ── */
+.add-ev-row{display:flex;gap:8px;align-items:center;margin:8px 0 6px}
+.add-ev-inp{
+  flex:1;padding:7px 12px;
+  border:1.5px solid var(--border);border-radius:var(--r);
+  font-size:12px;color:var(--text);background:var(--bg2);
+  font-family:inherit;transition:all .18s;
+}
+.add-ev-inp:focus{outline:none;border-color:var(--teal2);box-shadow:0 0 0 3px rgba(18,166,127,.1)}
+.btn-add{
+  padding:7px 15px;border:1.5px solid var(--teal2);
+  border-radius:var(--r);background:transparent;
+  cursor:pointer;font-size:12px;color:var(--teal);font-family:inherit;
+  font-weight:600;white-space:nowrap;transition:all .18s;
+}
+.btn-add:hover{background:var(--teal-light)}
+.cev-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.cev-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 11px;border-radius:20px;
+  background:var(--teal-light);border:1.5px solid var(--teal2);
+  color:var(--teal);font-size:11px;font-weight:600;
+}
+.cev-del{cursor:pointer;opacity:.7;font-size:14px;line-height:1;transition:opacity .15s}
+.cev-del:hover{opacity:1}
+
+/* ── RATING ── */
+.rg{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.rb{
+  padding:6px 15px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--bg2);
+  cursor:pointer;font-size:12px;color:var(--text2);
+  transition:all .18s;font-family:inherit;font-weight:500;
+}
+.rb:hover{border-color:var(--border2);background:var(--bg3)}
+.rb.s1{background:#E0F5EE;border-color:#1D9E75;color:#085041;font-weight:700;box-shadow:0 2px 6px rgba(29,158,117,.2)}
+.rb.s2{background:#EAF5DE;border-color:#5A9A28;color:#27500A;font-weight:700;box-shadow:0 2px 6px rgba(90,154,40,.2)}
+.rb.s3{background:#FEF3DC;border-color:#C4830A;color:#7A4A00;font-weight:700;box-shadow:0 2px 6px rgba(196,131,10,.2)}
+.rb.s4{background:#FDECEA;border-color:#C0392B;color:#7A1A10;font-weight:700;box-shadow:0 2px 6px rgba(192,57,43,.2)}
+.rb.s5{background:#FDEAEA;border-color:#A32D2D;color:#5A0A0A;font-weight:700;box-shadow:0 2px 6px rgba(163,45,45,.25)}
+
+/* ── LIVE RESULT ── */
+.live-box{
+  background:linear-gradient(135deg,#F4F7FF 0%,#EEF5F2 100%);
+  border-radius:var(--r);padding:14px 16px;margin-top:14px;
+  border:1.5px solid #D0DCF0;
+}
+.lr-head{font-size:11px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em}
+.lr-sent{
+  font-size:12.5px;color:var(--text);line-height:1.75;
+  font-style:italic;border-right:3px solid var(--teal2);
+  padding-right:11px;margin-bottom:10px;
+}
+.lr-dev{
+  font-size:12px;color:var(--text);padding:7px 12px;
+  background:var(--bg2);border-radius:var(--r);
+  border-right:3px solid var(--amber);margin-bottom:6px;
+  border:1px solid var(--amber-light);border-right:3px solid var(--amber);
+}
+.lr-rec{
+  font-size:12px;color:var(--text);padding:7px 12px;
+  background:var(--bg2);border-radius:var(--r);
+  border:1px solid var(--navy-light);border-right:3px solid var(--navy2);
+}
+.lr-empty{font-size:12px;color:var(--text3);text-align:center;padding:12px 0}
+
+/* ── BUTTONS ── */
+.btn{
+  padding:9px 20px;border-radius:var(--r);
+  border:1.5px solid var(--border2);background:var(--bg2);
+  cursor:pointer;font-size:13px;color:var(--text);
+  font-weight:600;transition:all .18s;font-family:inherit;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{background:var(--bg3);border-color:var(--navy2)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px rgba(27,58,107,.3);
+}
+.btn-primary:hover{opacity:.9;box-shadow:0 6px 20px rgba(27,58,107,.4)}
+.btn-teal{
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal2) 100%);
+  color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px rgba(13,122,95,.25);
+}
+.btn-teal:hover{opacity:.9}
+
+/* ── RESULT ── */
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.metric-card{
+  background:var(--bg3);border-radius:var(--r);
+  padding:14px 16px;border:1px solid var(--border);text-align:center;
+}
+.metric-lbl{font-size:11px;color:var(--text3);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.metric-val{font-size:24px;font-weight:700;color:var(--navy)}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.divider{border:none;border-top:1.5px solid var(--border);margin:16px 0}
+.exc-item{
+  font-size:12px;color:var(--text);padding:7px 12px;
+  background:var(--teal-light);border-radius:var(--r);
+  border-right:3px solid var(--teal2);margin-bottom:5px;
+  border:1px solid #B8E8D8;border-right:3px solid var(--teal2);
+}
+.rec-item{
+  font-size:12px;color:var(--text);padding:7px 12px;
+  background:var(--navy-light);border-radius:var(--r);
+  border:1px solid #C0CCE8;border-right:3px solid var(--navy2);
+  margin-bottom:5px;
+}
+.dev-item{
+  font-size:12px;color:var(--text);padding:7px 12px;
+  background:var(--amber-light);border-radius:var(--r);
+  border:1px solid #F0D8A0;border-right:3px solid var(--amber);
+  margin-bottom:5px;
+}
+.prow{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--border);
+}
+.prank{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;
+  background:var(--bg3);color:var(--text2);
+}
+.alert-danger{
+  padding:11px 15px;border-radius:var(--r);font-size:13px;
+  background:#FDEAEA;color:#5A0A0A;border:1.5px solid #C0392B;
+  margin-bottom:14px;font-weight:500;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ── BND ICONS ── */
+.ic-c1{background:linear-gradient(135deg,#667EEA,#764BA2);color:#fff}
+.ic-c2{background:linear-gradient(135deg,#F093FB,#F5576C);color:#fff}
+.ic-c3{background:linear-gradient(135deg,#4FACFE,#00F2FE);color:#fff}
+.ic-c4{background:linear-gradient(135deg,#43E97B,#38F9D7);color:#fff}
+.ic-c5{background:linear-gradient(135deg,#FA709A,#FEE140);color:#fff}
+.ic-c6{background:linear-gradient(135deg,#A18CD1,#FBC2EB);color:#fff}
+.ic-c7{background:linear-gradient(135deg,#FD7043,#FF8A65);color:#fff}
+.ic-c8{background:linear-gradient(135deg,#0072FF,#00C6FF);color:#fff}
+.ic-c9{background:linear-gradient(135deg,#11998E,#38EF7D);color:#fff}
+.ic-c10{background:linear-gradient(135deg,#C94B4B,#4B134F);color:#fff}
+
+/* ── PRINT ── */
+@media print{
+  .topbar,.sidebar,.btn,.rg,.chips-wrap,.add-ev-row,.cev-list,.bchv{display:none!important}
+  .layout{display:block}
+  .main{max-width:100%;padding:0}
+  .screen{display:block!important}
+  .bbody{display:block!important}
+  body{background:#fff;font-size:12px}
+  .card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;margin-bottom:10px}
+  .bnd{box-shadow:none;page-break-inside:avoid}
+}
+@media(max-width:640px){
+  .sidebar{display:none}
+  .g2,.g3,.metric-grid{grid-template-columns:1fr}
+  .main{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-logo">🔬</div>
+    <div>
+      <div class="tb-title">استمارة الزيارة الإشرافية — فني مختبر علوم</div>
+      <div class="tb-sub">المديرية العامة للإشراف التربوي | دائرة إشراف العلوم التطبيقية | وحدة إشراف مختبرات العلوم</div>
+    </div>
+  </div>
+  <div class="tb-meta">2025 / 2026 م</div>
+</div>
+
+<div class="layout">
+<div class="sidebar">
+  <div class="sb-sec">
+    <div class="sb-lbl">القوائم الرئيسية</div>
+    <div class="nav-item active" onclick="sw('visit',this)" data-s="visit">
+      <div class="nav-ico">📋</div> الزيارة الميدانية
+    </div>
+    <div class="nav-item" onclick="sw('result',this)" data-s="result">
+      <div class="nav-ico">📊</div> التقييم الشامل
+    </div>
+    <div class="nav-item" onclick="sw('compare',this)" data-s="compare">
+      <div class="nav-ico">🗺️</div> خريطة الأولويات
+    </div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-lbl">
+      <span>البنود المقيَّمة</span>
+      <span id="prog-txt" style="font-weight:700;color:var(--navy)">0 / 10</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div class="sb-sec" style="margin-top:22px">
+    <div class="sb-lbl">إجراءات</div>
+    <div class="nav-item" onclick="doFull()">
+      <div class="nav-ico">✅</div> إصدار التقييم
+    </div>
+    <div class="nav-item" onclick="window.print()">
+      <div class="nav-ico">🖨️</div> طباعة التقرير
+    </div>
+    <div class="nav-item" onclick="resetAll()">
+      <div class="nav-ico">🔄</div> زيارة جديدة
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- شاشة الزيارة -->
+<div class="screen active" id="sc-visit">
+  <div class="page-title">📋 نموذج الزيارة الإشرافية</div>
+  <div class="page-sub">اختر المؤشرات والأدلة بالضغط عليها، ثم حدد التقدير — تُولَّد الجمل والتوصيات تلقائياً</div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon" style="background:var(--navy-light);font-size:18px">🏫</div>
+      <div><div class="card-title">بيانات الزيارة</div><div class="card-sub">المعلومات الأساسية للزيارة الإشرافية</div></div>
+    </div>
+    <div class="g2">
+      <div class="fr"><label class="fl">اسم المدرسة</label><input class="fi" id="sname" placeholder="اكتب اسم المدرسة..."/></div>
+      <div class="fr"><label class="fl">الفصل الدراسي</label><select class="fi" id="sem"><option>الفصل الأول</option><option>الفصل الثاني</option></select></div>
+    </div>
+  </div>
+
+  <div id="bnds-wrap"></div>
+
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+    <button class="btn" onclick="window.print()">🖨️ طباعة</button>
+    <button class="btn btn-primary" onclick="doFull()">إصدار التقييم الشامل ←</button>
+  </div>
+</div>
+
+<!-- شاشة التقييم -->
+<div class="screen" id="sc-result">
+  <div class="page-title">📊 التقييم الإشرافي الشامل</div>
+  <div class="page-sub">نتائج الزيارة وجوانب الإجادة والتطوير والتوصيات الإجرائية</div>
+  <div id="res-area">
+    <div class="card" style="text-align:center;padding:3rem">
+      <div style="font-size:40px;margin-bottom:12px">📋</div>
+      <p style="font-size:14px;color:var(--text3)">أكمل الزيارة الميدانية أولاً ثم اضغط "إصدار التقييم الشامل"</p>
+    </div>
+  </div>
+</div>
+
+<!-- شاشة المقارنة -->
+<div class="screen" id="sc-compare">
+  <div class="page-title">🗺️ خريطة الأولويات الإشرافية</div>
+  <div class="page-sub">إضافة المدارس لمقارنة أدائها وتحديد أولويات التدخل الإشرافي</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon" style="background:var(--purple-light);font-size:18px">➕</div>
+      <div><div class="card-title">إضافة مدرسة</div></div>
+    </div>
+    <div class="g3">
+      <div class="fr"><label class="fl">اسم المدرسة</label><input class="fi" id="cs" placeholder="اسم المدرسة..."/></div>
+      <div class="fr"><label class="fl">متوسط التقييم (1–5)</label><input class="fi" id="ca" type="number" step="0.1" min="1" max="5" placeholder="1 – 5"/></div>
+      <div class="fr"><label class="fl">وضع السلامة</label>
+        <select class="fi" id="csa">
+          <option value="0">✅ سليم</option>
+          <option value="1">⚠️ مخاوف بسيطة</option>
+          <option value="2">🔴 خطر واضح</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:10px"><button class="btn btn-teal" onclick="addSch()">➕ إضافة المدرسة</button></div>
+  </div>
+  <div class="card" id="plist">
+    <div class="card-head">
+      <div class="card-icon" style="background:var(--sky-light);font-size:18px">📊</div>
+      <div><div class="card-title">خريطة الأولويات</div><div class="card-sub">المدارس مرتبة حسب الأولوية الإشرافية</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text3);text-align:center;padding:1.5rem">أضف بيانات المدارس لتظهر هنا مرتبةً حسب الأولوية</p>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+const LBL=['','متميز','جيد','ملائم','غير ملائم','يحتاج تدخل سريع'];
+const LBL_EN=['','1 – جميع / الكلي تقريباً','2 – معظم / الأكثر','3 – أغلب / الأكثر','4 – مقبول / بعض / قليلاً / محدود','5 – غير مرضٍ / نادراً / محدود جداً'];
+const VERBS={1:'يُظهر التزامًا متميزًا في',2:'يُبدي مستوى جيدًا في',3:'يلتزم بمستوى ملائم في',4:'يعاني من ضعف واضح في',5:'يُظهر قصورًا حادًا في'};
+const DEVPFX={1:'الحفاظ على مستوى الإجادة في',2:'تعزيز الأداء في',3:'تطوير',4:'معالجة الضعف في',5:'التدخل الفوري في'};
+
+const BNDS=[
+{id:'c1',num:'١',ico:'🌟',icoCls:'ic-c1',
+ domain:'النمو الشخصي',field:'القيم والسلوك',
+ title:'القيم والسلوك',
+ bnd:'سلوك الطلبة داخل المختبر ومتابعة التزامهم بالقيم الأخلاقية والمهنية (الاحترام المتبادل، إدراك الحقوق والواجبات، الوعي بقواعد المختبر، الحماس والدافعية)',
+ inds:[
+   'الالتزام بالآداب العامة داخل بيئة المختبر',
+   'دخول وخروج منظّم',
+   'التزام الهدوء أثناء تنفيذ الأنشطة العملية',
+   'الالتزام بتعليمات الفني والمعلم',
+   'عدم العبث بالأدوات أو المواد الكيميائية',
+   'تنفيذ المهام وفق التوجيهات',
+   'توزيع المهام داخل المجموعة',
+   'احترام دور كل فرد',
+   'عدم استخدام ألفاظ غير لائقة',
+   'احترام خصوصية الآخرين',
+   'استخدام أدوات السلامة الشخصية (معاطف، قفازات، نظارات، كمامات)',
+   'تبادل الأدوات بشكل منظّم',
+   'المحافظة على نظافة الطاولات',
+   'إعادة الأدوات إلى أماكنها',
+   'التخلص السليم من النفايات',
+   'الحماس والدافعية من خلال تولي زمام المبادرة'
+ ],
+ evs:[
+   'سلوك الطلبة أثناء التجارب',
+   'أدوات السلامة الشخصية المستخدمة',
+   'غياب المخالفات السلوكية',
+   'وجود لوائح وإرشادات بارزة في المختبر',
+   'تفاعل الطلبة مع الفني والمعلم',
+   'وجود ثقافة واضحة لتعزيز حقوق الطلبة وواجباتهم'
+ ],
+ exc:['الطلبة يلتزمون بقواعد السلامة والانضباط ويتعاونون بكفاءة','تنعكس بيئة تعليمية آمنة ومحفزة على التعلم'],
+ devs:['تعزيز ثقافة الانضباط عبر ميثاق شرف المختبر','وضع لوائح إرشادية بارزة في جميع مرافق المختبر'],
+ recs:['تنفيذ حصة السلامة في أول يوم للدروس العملية لجميع الصفوف','متابعة سلوك الطلبة يومياً وتوثيق المخالفات وفق نظام واضح','مراجعة المادتين (47) و(48) من قانون التعليم مع الطلبة']},
+
+{id:'c2',num:'٢',ico:'🛡️',icoCls:'ic-c2',
+ domain:'مناخ المدرسة وبيئة التعلم',field:'جودة بيئة التعلم',
+ title:'الالتزام بالأمن والسلامة والنظافة',
+ bnd:'التزام فني المختبر بمتابعة وتطبيق تدابير الأمن والسلامة والنظافة في مرافق مختبرات العلوم (إجراءات وأدوات السلامة، الإلمام بها وتوفرها وتوعية الطلبة بها)',
+ inds:[
+   'السياسة العامة للإشراف على أمن وسلامة الطلبة ومرتادي مختبر العلوم',
+   'التأكد من وجود لوحة مخطط الإخلاء',
+   'توفر صندوق الإسعافات الأولية وصلاحيته',
+   'توفر وحدة غسيل العين وصلاحيتها',
+   'توفر سائل تعقيم اليدين',
+   'توفر معطف العمل المخبري',
+   'توفر النظارات الواقية',
+   'توفر الكمامات',
+   'توفر القفازات',
+   'توفر وعاء الرمل',
+   'توفر طفايات الحريق (محدّثة)',
+   'توفر بطانية الحريق',
+   'توفر مراوح الشفط',
+   'توفر خزانة طرد الغازات',
+   'توفر جهاز إنذار الحريق',
+   'توفر خزانة الأحماض والقواعد',
+   'توفر أبواب الطوارئ',
+   'نظافة مرافق المختبر والطاولات والأدوات',
+   'حفظ المواد الكيميائية بطريقة آمنة',
+   'حصر المواد الكيميائية التالفة ومنتهية الصلاحية',
+   'التخلص السليم من المخلفات الكيميائية',
+   'توفر لوحات إرشادية تحث على السلامة والنظافة',
+   'توفر حاويات نفايات مناسبة',
+   'معرفة فني المختبر للطلبة ذوي الأمراض المزمنة',
+   'عدم وضع الأسلاك الكهربائية متدلية من على الطاولات أو في الممرات',
+   'تفادي الممارسات الخاطئة التي تهدد سلامة الطلبة والعاملين',
+   'وجود ترخيص رسمي من الجهات المختصة (للمدارس الخاصة)'
+ ],
+ evs:[
+   'فحص أدوات السلامة وصلاحيتها',
+   'ملاحظة نظافة الطاولات والأرضيات والأدوات',
+   'فحص طريقة تخزين المواد الكيميائية',
+   'وجود سجل حصر المواد التالفة',
+   'ملاحظة الممارسات أثناء تنفيذ التجارب',
+   'وجود لوحة مخطط الإخلاء في مكان بارز',
+   'وجود الاحتياطات الأمنية المتعلقة بالتجربة'
+ ],
+ exc:['توفر جميع أدوات السلامة وصلاحيتها','نظافة ممتازة لجميع مرافق المختبر','تخزين سليم ومنظم للمواد الكيميائية'],
+ devs:['استيفاء جميع اشتراطات أدوات السلامة وفق قائمة التحقق الرسمية','تحديث لوحة مخطط الإخلاء وإبرازها في مكان واضح'],
+ recs:['رفع طلب نقص أدوات السلامة عبر النافذة الرقمية فوراً','إجراء جرد دوري شهري لأدوات السلامة والتحقق من صلاحيتها','التنسيق مع شركة بيئة للتخلص من المواد الكيميائية التالفة ومنتهية الصلاحية']},
+
+{id:'c3',num:'٣',ico:'⚗️',icoCls:'ic-c3',
+ domain:'مناخ المدرسة وبيئة التعلم',field:'جودة بيئة التعلم',
+ title:'تفعيل الأجهزة والأدوات المخبرية وأجهزة التقانة',
+ bnd:'تفعيل الأجهزة والأدوات المخبرية وأجهزة التقانة والتمكن من استخدامها للتعلم الحضوري والتعلم عن بعد، لدعم وإسناد المعلم والطلبة، ومتابعة صلاحية الموجهات واستخدام جميع الأدوات',
+ inds:[
+   'توفر الوسائل والأدوات الآمنة والمعينة لتحقيق أهداف التعلم',
+   'تحديث البرامج في أجهزة الحاسوب وتنفيذ التجارب في مجموعات',
+   'تفعيل أجهزة التقانة (المجسات الإلكترونية)',
+   'تفعيل الميزان المحوسب',
+   'تفعيل المجهر المحوسب وكاميرا المجهر',
+   'تفعيل السبورة التفاعلية',
+   'تواجد فني المختبر أثناء التجربة',
+   'تقديم الدعم والمساندة أثناء تنفيذ التجارب العملية',
+   'توفر شبكة إنترنت آمنة وموثوقة',
+   'استخدام منصات معتمدة من الوزارة',
+   'بيئة صفية داعمة للتفاعل الرقمي',
+   'تمكن الفني من تفعيل الأجهزة والأدوات',
+   'توثيق تفعيل الأجهزة حسب الموجهات إلكترونياً أو ورقياً',
+   'تعاون الفني مع المعلم في تحضير التجارب قبل التنفيذ',
+   'تحضير المحاليل والكواشف والصبغات وحفظها بالطرق العلمية السليمة',
+   'تصنيف الأدوات والأجهزة المخبرية وفق الموجهات التنظيمية',
+   'توفير مستلزمات الدروس العملية من المواد الاستهلاكية وتوثيقها',
+   'تفعيل الأجهزة الكهربائية مع الجهد المناسب'
+ ],
+ evs:[
+   'مشاهدة تفعيل الأجهزة أثناء التجارب',
+   'سجل توثيق تفعيل الأجهزة',
+   'ملاحظة التحضير في غرفة التحضير قبل الحصة',
+   'تواجد الفني خلال جميع التجارب',
+   'ترتيب وتصنيف الأدوات في الخزائن',
+   'حداثة برامج تشغيل أجهزة التقانة'
+ ],
+ exc:['تفعيل فعال لأجهزة التقانة الحديثة في الدروس','حضور مستمر ودعم فعّال للمعلم أثناء التجارب','تحضير مسبق دقيق للمواد والمحاليل'],
+ devs:['تفعيل أجهزة التقانة المعطلة وإدراجها في جدول الدروس','الالتزام بالتواجد الكامل خلال جميع حصص الدروس العملية'],
+ recs:['التنسيق مع مشرف صيانة الأجهزة المخبرية لإصلاح الأجهزة المعطلة','وضع جدول أسبوعي واضح لتفعيل أجهزة التقانة في كل درس','تحديث برامج التشغيل لأجهزة التقانة في بداية كل فصل دراسي']},
+
+{id:'c4',num:'٤',ico:'🔬',icoCls:'ic-c4',
+ domain:'مناخ المدرسة وبيئة التعلم',field:'تنمية مهارات البحث العلمي',
+ title:'توظيف أساليب مبتكرة لتنمية مهارات البحث العلمي وتعزيز مواهب الطلبة',
+ bnd:'يُسهم في تنمية مهارات البحث العلمي وتعزيز مواهب الطلبة. توظيف نماذج البحوث العلمية كأوراق أعمال الطلبة داخل المختبر',
+ inds:[
+   'تعزيز مواهب الطلبة وقدراتهم من خلال دعم المشاريع والابتكارات',
+   'توظيف موارد المختبر بما يساهم في تنمية مهارات المستقبل لدى الطلبة',
+   'إبراز مواهب الطلبة (تفعيل ممرات المختبر في عرض إنجازات الطلبة)',
+   'وجود قائمة بأسماء الموهوبين لدى الفني لمعرفتهم وتمييزهم',
+   'معرفة مهارات البحث العلمي (النزاهة، الأمانة العلمية، المصداقية، احترام الملكية الفكرية، أخلاقيات البحث العلمي)',
+   'المساهمة في المشاريع البحثية المنفذة في المختبر',
+   'المشاركة في المعارض والفعاليات والأنشطة والمشاريع العلمية',
+   'تقديم الدعم الفني للطلبة أثناء العمل التجريبي',
+   'يُساهم في غرس أخلاقيات البحث العلمي لدى الطلبة',
+   'إعداد بحوث وأوراق عمل تساهم في تطوير العمل المخبري'
+ ],
+ evs:[
+   'مشاريع بحثية معروضة في ممرات المختبر',
+   'قائمة الطلبة الموهوبين لدى الفني',
+   'سجل المشاركة في المعارض والفعاليات العلمية',
+   'أوراق عمل تطويرية معدة من الفني',
+   'تنفيذ برامج وأنشطة وفعاليات ومسابقات ومعارض'
+ ],
+ exc:['اهتمام واضح بدعم الطلبة الموهوبين وتمييزهم','تفعيل ممرات المختبر لعرض إنجازات الطلبة','مشاركة فعالة في المعارض العلمية'],
+ devs:['إعداد قائمة رسمية بأسماء الطلبة الموهوبين وتحديثها دورياً','تخصيص مساحة دائمة في المختبر لعرض إنجازات الطلبة'],
+ recs:['التنسيق مع معلمي العلوم لتحديد الطلبة الموهوبين ودعمهم','المشاركة في فعالية علمية واحدة على الأقل كل فصل دراسي','غرس أخلاقيات البحث العلمي من خلال الممارسة اليومية']},
+
+{id:'c5',num:'٥',ico:'📅',icoCls:'ic-c5',
+ domain:'القيادة والإدارة والحوكمة',field:'قيادة التقييم',
+ title:'المشاركة في إعداد وخطة الدروس العملية لتحقيق أهداف العلوم',
+ bnd:'المشاركة في إعداد وخطة الدروس العملية لتحقيق التكامل العلمي للعلوم واملعلم الأول وتنفيذها (توظيف المنصات الرقمية، كمتابعة تنفيذ الدروس العملية رقمياً، وتقديم حلول للمحدثات التقنية)',
+ inds:[
+   'المشاركة في إعداد خطة الدروس العملية بالتنسيق مع المعلمين بالمدرسة',
+   'توفر خطة واضحة لتنفيذ الدروس العملية معتمدة بداية كل فصل دراسي',
+   'متابعة التنفيذ إلكترونياً أو ورقياً من خلال طباعة الخطة والإلمام بجميع جوانبها',
+   'استخدام الأنظمة المحوسبة لإدارة الأعمال الإدارية لمختبرات العلوم (البوابة التعليمية - عتاد)',
+   'تقديم الدعم والمساندة وإيجاد الحلول الفنية فيما يتعلق باستخدام المنصات الرقمية',
+   'توظيف المنصات الرقمية للوصول للمعلومات المتعلقة بتنفيذ الدروس العملية',
+   'إجراء تحليل البيانات والمعلومات الرقمية المرتبطة واستثمارها لتحسين الجودة',
+   'تقديم الدعم للمعلمين والطلبة في استخدام المنصات الرقمية وتقديم حلول للتحديات التقنية',
+   'استخدام الأنظمة المحوسبة (نظام عتاد) لتحديث السجلات والأصناف المخبرية إلكترونياً'
+ ],
+ evs:[
+   'خطة الدروس العملية المعتمدة في البوابة التعليمية',
+   'سجل متابعة التنفيذ الإلكتروني',
+   'توافق تواريخ حجز المختبر مع التنفيذ الفعلي',
+   'إحصائيات الدروس في نظام عتاد',
+   'جودة تنفيذ الدروس وتحقيق أهداف المعلم'
+ ],
+ exc:['خطة دروس منظمة ومعتمدة ومتابعة بانتظام','استخدام فعال للبوابة التعليمية ونظام عتاد'],
+ devs:['اعتماد خطة الدروس العملية في البوابة خلال الأسبوع الأول من كل فصل','تحديث سجلات التنفيذ في نظام عتاد بشكل منتظم'],
+ recs:['وضع جدول أسبوعي منظم مع المعلمين لتنفيذ الدروس','تحليل الدروس غير المنفذة وتحديد أسبابها ومعالجتها']},
+
+{id:'c6',num:'٦',ico:'🤝',icoCls:'ic-c6',
+ domain:'القيادة والإدارة والحوكمة',field:'قيادة التقييم',
+ title:'قدرة فني المختبر على التواصل الفاعل مع المجتمع المدرسي',
+ bnd:'القدرة على التواصل الفاعل مع المجتمع المدرسي (القدرة على التواصل لدعم عمليات التحسين والتطوير في المدرسة، دمج فني المختبر في البيئة التعليمية في وجداء أعمله، تقبل الملاحظات والتوجيهات والعمل على تنفيذها)',
+ inds:[
+   'التواصل الفاعل مع المجتمع المدرسي للتغلب على التحديات التي تواجهه',
+   'التواصل الفعال مع أخصائي الصيانة',
+   'التعاون مع المعلم في الإعداد والتنفيذ للدروس العملية',
+   'المشاركة في اللجان المدرسية والمشاريع والاجتماعات',
+   'تقبل التوجيهات والملاحظات وتنفيذ التوصيات',
+   'تفعيل ومتابعة قنوات التواصل الرسمية (نظام المراسلات والبريد الإلكتروني)',
+   'توثيق التعاون بين المدرسة والبيت والمجتمع المحلي بإشراف إدارة المدرسة',
+   'المشاركة في أعمال المجالس واللجان المدرسية وحضور الاجتماعات المدرسية',
+   'تقبل فني المختبر جميع التوجيهات وملاحظات المسؤولين والعمل على تنفيذها'
+ ],
+ evs:[
+   'مستوى التعاون مع المعلمين في التحضير',
+   'حضور الاجتماعات واللجان المدرسية',
+   'مدى تنفيذ توصيات الزيارات الإشرافية السابقة',
+   'التواصل مع أخصائي الصيانة عند الحاجة',
+   'محاضر الاجتماعات المشارَك فيها'
+ ],
+ exc:['تعاون واضح ومنتظم مع المعلمين في التحضير','تنفيذ جميع توصيات الزيارات الإشرافية السابقة'],
+ devs:['تفعيل التنسيق الأسبوعي المنتظم مع معلمي العلوم','متابعة توصيات الزيارات السابقة وتوثيق تنفيذها'],
+ recs:['إعداد تقرير دوري للمشرف المختص حول مستجدات المختبر','الحضور الفعال في جميع اجتماعات مجلس المعلمين']},
+
+{id:'c7',num:'٧',ico:'📦',icoCls:'ic-c7',
+ domain:'القيادة والإدارة والحوكمة',field:'الكفاءة الإدارية',
+ title:'إدارة موارد المختبر بما يخدم تعلم الطلبة',
+ bnd:'قدرة فني المختبر الموارد والتجهيزات المخبرية، ويقوم بالعمليات المتعلقة بتنفيذ الدروس العملية، وتوثق الموارد مع خدمة الأهداف التعليمية (الجرد والخصم واستهلاك الاستعارة)، يقوم بعمليات الصيانة المطلوبة، تعيف الأدوات',
+ inds:[
+   'تنفيذ عمليات الجرد من خلال مطابقة العهدة إلكترونياً في نظام عتاد بالواقع',
+   'تصنيف وتخزين المواد والأدوات حسب الموجهات والأسس العلمية',
+   'متابعة تنفيذ الدروس العملية والقيام بالعمليات المتعلقة بها (الاستعارة، الخصم، الاستهلاك، التلف والكسر)',
+   'القيام بعمليات الاستلام والصرف أو التسوية ومتابعتها إلكترونياً أو ورقياً',
+   'توظيف الموارد في المختبر بما يخدم تعلم الطلبة',
+   'القيام بعمليات الصيانة البسيطة الوقائية والإجرائية',
+   'التأكد من فاعلية جميع الأدوات المطلوبة بالتنسيق مع معلمي العلوم'
+ ],
+ evs:[
+   'سجل العهدة في نظام عتاد ومطابقته للواقع الفعلي',
+   'تنظيم وتصنيف الأدوات في الخزائن وفق التصنيف المخبري',
+   'سجلات الاستلام والصرف والتسوية',
+   'طريقة ترتيب المواد الكيميائية وتخزينها',
+   'سجل الصيانة البسيطة الوقائية'
+ ],
+ exc:['عهدة منظمة ومطابقة للواقع في نظام عتاد','تصنيف علمي سليم للمواد والأدوات وفق الموجهات','سجلات إدارية حديثة ودقيقة'],
+ devs:['إجراء جرد شامل ومطابقة العهدة في نظام عتاد بالواقع الفعلي','تحديث جميع سجلات الاستهلاك والكسر والتلف المتراكمة'],
+ recs:['إعادة تصنيف وتنظيم الأدوات وفق الموجهات التنظيمية الرسمية','وضع خطة صيانة وقائية فصلية لجميع أجهزة المختبر']},
+
+{id:'c8',num:'٨',ico:'💻',icoCls:'ic-c8',
+ domain:'القيادة والإدارة والحوكمة',field:'الكفاءة الإدارية',
+ title:'الاستخدام الفاعل للمرافق والوسائل والمنصات التعليمية',
+ bnd:'الاستخدام الفاعل للمرافق والوسائل والمنصات التعليمية وإدارة موارد المختبر وتجهيزاته بشكل فعّال لمحضيم الدروس العملية ومتابعة تنفيذها (نظام إدارة المختبرات، نظام عتاد، المختبرات الافتراضية، إعداد السجلات والملفات وتحديثها، تحديث المناهج والتطبيقات المحوسبة)',
+ inds:[
+   'المعرفة والإلمام بجوانب الأعمال الإدارية المتعلقة بالمنصات الرقمية',
+   'تنفيذ الأعمال الإدارية بالمختبر من خلال تفعيل نظام إدارة مختبرات العلوم بالبوابة التعليمية',
+   'إعداد السجلات والملفات ذات العلاقة بمجال عمله وتحديثها بما يضمن تجويد الأداء',
+   'متابعة تفعيل البرامج والتطبيقات المحوسبة وتوثيقها',
+   'تحديث البرامج والتطبيقات المحوسبة المرتبطة بأجهزة التقانة',
+   'متابعة تفعيل المختبرات الافتراضية حسب الضوابط والموجهات وتقديم الدعم اللازم',
+   'إعداد تقرير فصلي عن سير عمله ورفعه إلى مدير المدرسة والمشرف المختص (مؤشرات تنفيذ الدروس العملية، ومؤشرات خطة تنفيذ الدروس)'
+ ],
+ evs:[
+   'سجل استخدام البوابة التعليمية ونظام عتاد',
+   'السجلات والملفات ودقتها وحداثتها',
+   'التقرير الفصلي المعد والمرفوع في وقته',
+   'تحديث برامج التشغيل لأجهزة التقانة',
+   'سجل تفعيل المختبرات الافتراضية'
+ ],
+ exc:['استخدام فعال ومنتظم للبوابة التعليمية ونظام عتاد','سجلات وملفات حديثة ومنظمة وفق الموجهات','تقارير فصلية دقيقة ومرفوعة في وقتها'],
+ devs:['الالتزام بتحديث البوابة التعليمية وسجلات عتاد بشكل أسبوعي منتظم','إعداد التقرير الفصلي في الأسبوع الأول بعد انتهاء كل فصل دراسي'],
+ recs:['تنظيم الملفات الإدارية وفق هيكل واضح وموحد','تحديث برامج التشغيل لأجهزة التقانة في بداية كل فصل دراسي']},
+
+{id:'c9',num:'٩',ico:'📚',icoCls:'ic-c9',
+ domain:'القيادة والإدارة والحوكمة',field:'التطوير المهني الذاتي',
+ title:'التزام فني المختبر على تطوير مهاراته المهنية',
+ bnd:'الإلمام من المستجدات، ويشارك وينفذ اجتمعات تعلم المهنية داخل وخارج المدرسة، المشاركة في الدور والمهمالاجتماعية الحضورية والافتراضية، كتحديد الاحتياجات المدرسية للمستفيدين من المختبر',
+ inds:[
+   'الإلمام بالمناهج والمستجدات التربوية في مجال عمله',
+   'يشارك وينفذ مجتمع تعلم مهني',
+   'يعمل على تطوير معارفه المهنية وتعزيز خبراته العملية',
+   'يلتزم بالمشاركة في الفعاليات واللقاءات والبرامج التدريبية ذات العلاقة بمجال عمله',
+   'يعمل على تقويم أدائه ذاتياً (استمارة تقييم أداء فني المختبر)',
+   'يعمل على تطوير مهاراته ذاتياً من خلال منصة التدريب الإلكتروني في البوابة التعليمية',
+   'يعمل على التجديد والتطوير وتقديم المقترحات في مجال واجباته ومسؤولياته في ضوء لوائح وأنظمة عمله',
+   'يحدد احتياجاته التدريبية ويلبيها، ويعزز خبراته بالاطلاع على المستجدات التربوية والتقنيات الحديثة'
+ ],
+ evs:[
+   'سجل الدورات التدريبية المكتملة',
+   'مدى تطبيق مخرجات التدريب في العمل الميداني',
+   'المشاركة في اللقاءات الإشرافية والتطويرية',
+   'وجود خطة تطوير ذاتي لدى الفني'
+ ],
+ exc:['مشاركة فعالة في الدورات التدريبية','تطبيق ميداني واضح ومباشر لمخرجات التدريب','اطلاع مستمر على المستجدات التربوية'],
+ devs:['تحديد الاحتياجات التدريبية الفعلية ورفعها رسمياً للمشرف المختص','تفعيل منصة التدريب الإلكتروني في البوابة التعليمية'],
+ recs:['الالتزام بجميع البرامج التدريبية المقررة من الإدارة والإشراف','إعداد خطة تطوير ذاتي فصلية قابلة للقياس والمتابعة']},
+
+{id:'c10',num:'١٠',ico:'⚖️',icoCls:'ic-c10',
+ domain:'القيادة والإدارة والحوكمة',field:'الحوكمة',
+ title:'الالتزام بالتشريعات والقوانين واللوائح والقرارات المنظمة للعمل',
+ bnd:'تطبيق السياسات والأنظمة واللوائح المنظمة للعمل كالعشرة الموجهية، الدوام، السلوك الوظيفي، بطاقة الوصف الوظيفي (وظيفة فني مختبر علوم)',
+ inds:[
+   'يلتزم بأخلاقيات المهنة والقوانين واللوائح والقرارات المنظمة للعمل سلوكاً وعملاً',
+   'الانضباط في الحضور والانصراف',
+   'اتباع اللوائح والقوانين المنظمة للعمل',
+   'الإلمام بالمهام الوظيفية وتنفيذها (بطاقة الوصف الوظيفي)',
+   'الإلمام بالنشرة التوجيهية والعمل بموجبها',
+   'الالتزام بالعشرة الموجهية',
+   'دليل السلوك الوظيفي'
+ ],
+ evs:[
+   'سجلات الحضور والانصراف',
+   'مطابقة الممارسة الفعلية لبطاقة الوصف الوظيفي',
+   'الإلمام بمحتوى النشرة التوجيهية الحالية 2025/2026',
+   'الاستجابة للتعليمات والقرارات خلال الزيارة',
+   'مدى تنفيذ التعميمات والقرارات الصادرة'
+ ],
+ exc:['التزام تام وانضباط في الحضور والانصراف','تطبيق دقيق وكامل لبطاقة الوصف الوظيفي'],
+ devs:['دراسة بطاقة الوصف الوظيفي والنشرة التوجيهية بعمق والعمل بموجبهما','الالتزام الكامل بإجراءات الحضور والانصراف الرسمية'],
+ recs:['تنفيذ جميع التعليمات والقرارات والتعميمات في مواعيدها المحددة','رفع تقرير إنجاز دوري للمشرف المختص وفق النموذج المعتمد']}
+];
+
+const state={};
+BNDS.forEach(b=>{state[b.id]={rat:0,inds:[],evs:[],customEvs:[]};});
+const schools=[];
+
+function sw(id,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sc-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  else document.querySelectorAll('.nav-item').forEach(n=>{if(n.dataset.s===id)n.classList.add('active');});
+}
+
+function tog(id){
+  document.getElementById('bd-'+id).classList.toggle('open');
+  document.getElementById('chv-'+id).classList.toggle('open');
+}
+
+function selInd(bid,idx,el){
+  const s=state[bid],i=s.inds.indexOf(idx);
+  if(i>-1){s.inds.splice(i,1);el.classList.remove('sel-ind');el.querySelector('.chip-ico').textContent='○';}
+  else{s.inds.push(idx);el.classList.add('sel-ind');el.querySelector('.chip-ico').textContent='●';}
+  genLive(bid);
+}
+
+function selEv(bid,idx,el){
+  const s=state[bid],i=s.evs.indexOf(idx);
+  if(i>-1){s.evs.splice(i,1);el.classList.remove('sel-ev');el.querySelector('.chip-ico').textContent='○';}
+  else{s.evs.push(idx);el.classList.add('sel-ev');el.querySelector('.chip-ico').textContent='●';}
+  genLive(bid);
+}
+
+function addCev(bid){
+  const inp=document.getElementById('ceinp-'+bid);
+  const val=inp.value.trim();
+  if(!val)return;
+  state[bid].customEvs.push(val);
+  inp.value='';
+  renderCev(bid);
+  genLive(bid);
+}
+
+function delCev(bid,idx){
+  state[bid].customEvs.splice(idx,1);
+  renderCev(bid);
+  genLive(bid);
+}
+
+function renderCev(bid){
+  document.getElementById('cev-'+bid).innerHTML=state[bid].customEvs.map((ev,i)=>
+    `<span class="cev-tag">${ev}<span class="cev-del" onclick="delCev('${bid}',${i})">×</span></span>`
+  ).join('');
+}
+
+function updProg(){
+  const done=BNDS.filter(b=>state[b.id].rat>0).length;
+  document.getElementById('prog-txt').textContent=done+' / 10';
+  document.getElementById('prog-fill').style.width=(done*10)+'%';
+}
+
+function rate(bid,v,btn){
+  state[bid].rat=v;
+  document.getElementById('rg-'+bid).querySelectorAll('.rb').forEach(b=>b.className='rb');
+  btn.classList.add('s'+v);
+  const bg=document.getElementById('bg-'+bid);
+  bg.className='badge b'+v;
+  bg.textContent=LBL[v];
+  updProg();
+  genLive(bid);
+}
+
+function genLive(bid){
+  const s=state[bid];
+  const b=BNDS.find(x=>x.id===bid);
+  const el=document.getElementById('lr-'+bid);
+  if(!s.rat){el.innerHTML='<div class="lr-empty">اختر التقدير لتوليد الجملة التقييمية تلقائياً</div>';return;}
+  const allEvs=[...s.evs.map(i=>b.evs[i]),...s.customEvs].filter(Boolean);
+  const selInds=s.inds.map(i=>b.inds[i]).filter(Boolean);
+  const evText=allEvs.length>0?allEvs.slice(0,2).join(' و'):null;
+  const indText=selInds.length>0?selInds.slice(0,2).join(' و'):b.title;
+  const ev=evText?`، كما يتضح من ${evText}`:'';
+  const impact=s.rat<=2?'مما يُسهم في تجويد البيئة التعليمية المخبرية وتحقيق أهداف التعلم':
+               s.rat===3?'مما يستدعي مزيدًا من الاهتمام والمتابعة الإشرافية':
+               'مما يؤثر سلبًا على جودة العملية التعليمية المخبرية';
+  const sent=`${VERBS[s.rat]} ${indText}${ev}، ${impact}.`;
+  const dev=s.rat<=2?`يُنصح بـ${b.devs[0]} واستمرار الأداء الجيد.`:`يتطلب ${DEVPFX[s.rat]} ${b.title}: ${b.devs[0]}.`;
+  const recIdx=Math.min(s.rat-1,b.recs.length-1);
+  el.innerHTML=`
+    <div class="lr-head" style="color:var(--teal)"><span>✍️</span> الجملة التقييمية</div>
+    <div class="lr-sent">${sent}</div>
+    <div class="lr-head" style="color:var(--amber);margin-top:10px"><span>🎯</span> الجملة التطويرية</div>
+    <div class="lr-dev">${dev}</div>
+    <div class="lr-head" style="color:var(--navy2);margin-top:8px"><span>📌</span> التوصية الإجرائية</div>
+    <div class="lr-rec">${b.recs[recIdx]||b.recs[0]}</div>`;
+}
+
+function buildBnds(){
+  document.getElementById('bnds-wrap').innerHTML=BNDS.map(b=>`
+  <div class="bnd" id="bnd-${b.id}">
+    <div class="bnd-hdr" onclick="tog('${b.id}')">
+      <div class="bnd-icon ${b.icoCls}">${b.ico}</div>
+      <div class="bnd-num">${b.num}</div>
+      <div class="bnd-info">
+        <div class="bnd-title">${b.title}</div>
+        <div class="bnd-sub">${b.field} · ${b.domain}</div>
+      </div>
+      <div class="bnd-right">
+        <span class="badge b0" id="bg-${b.id}">لم يُقيَّم</span>
+        <span class="bchv" id="chv-${b.id}">▼</span>
+      </div>
+    </div>
+    <div class="bbody" id="bd-${b.id}">
+      <div style="background:var(--bg3);border-radius:var(--r);padding:10px 14px;margin-top:12px;font-size:12px;color:var(--text2);border-right:3px solid var(--navy-light)">
+        ${b.bnd}
+      </div>
+
+      <div class="sec-lbl" style="color:var(--navy)">
+        <span class="sec-dot" style="background:var(--navy2)"></span>
+        المؤشرات — اضغط لاختيار ما لاحظته
+      </div>
+      <div class="chips-wrap">${b.inds.map((ind,i)=>`
+        <span class="chip" onclick="selInd('${b.id}',${i},this)">
+          <span class="chip-ico">○</span>${ind}
+        </span>`).join('')}</div>
+
+      <div class="sec-lbl" style="color:var(--teal)">
+        <span class="sec-dot" style="background:var(--teal2)"></span>
+        أدلة التحقق — اختر الأدلة الداعمة
+      </div>
+      <div class="chips-wrap">${b.evs.map((ev,i)=>`
+        <span class="chip" onclick="selEv('${b.id}',${i},this)">
+          <span class="chip-ico">○</span>${ev}
+        </span>`).join('')}</div>
+
+      <div class="sec-lbl" style="color:var(--green)">
+        <span class="sec-dot" style="background:var(--green)"></span>
+        دليل مخصص — أضف دليلاً ميدانياً غير موجود في القائمة
+      </div>
+      <div class="add-ev-row">
+        <input class="add-ev-inp" id="ceinp-${b.id}" placeholder="اكتب الدليل الميداني هنا ثم اضغط Enter أو إضافة..."
+          onkeydown="if(event.key==='Enter')addCev('${b.id}')"/>
+        <button class="btn-add" onclick="addCev('${b.id}')">إضافة +</button>
+      </div>
+      <div class="cev-list" id="cev-${b.id}"></div>
+
+      <div class="sec-lbl" style="color:var(--amber)">
+        <span class="sec-dot" style="background:var(--amber)"></span>
+        التقدير وفق سلم التقييم المعتمد
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:6px">
+        متميز (جميع/الكلي تقريباً) · جيد (معظم/الأكثر) · ملائم (أغلب/الأكثر) · غير ملائم (بعض/محدود) · يحتاج تدخل سريع (نادراً/محدود جداً)
+      </div>
+      <div class="rg" id="rg-${b.id}">
+        ${[1,2,3,4,5].map(v=>`<button class="rb" onclick="rate('${b.id}',${v},this)">${LBL[v]}</button>`).join('')}
+      </div>
+      <div class="live-box" id="lr-${b.id}">
+        <div class="lr-empty">اختر التقدير لتوليد الجملة التقييمية تلقائياً</div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+function doFull(){
+  const school=document.getElementById('sname').value||'المدرسة';
+  const sem=document.getElementById('sem').value;
+  const rk=BNDS.filter(b=>state[b.id].rat>0);
+  const avg=rk.length>0?(rk.reduce((s,b)=>s+state[b.id].rat,0)/rk.length).toFixed(1):'—';
+  const hasSafety=state['c2'].rat>=4;
+  let ov=3;
+  if(rk.length>0){
+    const a=parseFloat(avg);
+    if(hasSafety||state['c2'].rat===5)ov=5;
+    else if(a<=1.5)ov=1;else if(a<=2.5)ov=2;else if(a<=3.5)ov=3;else if(a<=4.5)ov=4;else ov=5;
+  }
+  const str=BNDS.filter(b=>state[b.id].rat>0&&state[b.id].rat<=2);
+  const devPri=BNDS.filter(b=>state[b.id].rat>=3).sort((a,b)=>state[b.id].rat-state[a.id].rat).slice(0,5);
+  const now=new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+
+  document.getElementById('res-area').innerHTML=`
+    ${hasSafety?'<div class="alert-danger">⚠️ تنبيه سلامة حرج — يستوجب تدخلاً فورياً قبل استمرار أي درس عملي</div>':''}
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:var(--navy-light);font-size:18px">🏫</div>
+        <div>
+          <div class="card-title">ملخص التقييم الإشرافي</div>
+          <div class="card-sub">${school} | ${sem} | ${now}</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-lbl">متوسط التقييم</div>
+          <div class="metric-val">${avg}<span style="font-size:14px;color:var(--text3)">/5</span></div>
+          <div class="metric-sub">${rk.length} من 10 بنود مقيَّمة</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-lbl">المستوى الكلي</div>
+          <div class="metric-val" style="font-size:16px;margin-top:4px"><span class="badge b${ov}">${LBL[ov]}</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-lbl">البنود المكتملة</div>
+          <div class="metric-val">${rk.length}<span style="font-size:14px;color:var(--text3)">/10</span></div>
+          <div class="metric-sub">${10-rk.length} بنود غير مقيَّمة</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px">تفصيل البنود العشرة</div>
+      ${BNDS.map(b=>{
+        const s=state[b.id];
+        const allEvs=[...s.evs.map(i=>b.evs[i]),...s.customEvs].filter(Boolean);
+        const selInds=s.inds.map(i=>b.inds[i]).filter(Boolean);
+        return`<div style="padding:9px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px">
+          <div class="bnd-icon ${b.icoCls}" style="width:30px;height:30px;font-size:14px;border-radius:7px;flex-shrink:0">${b.ico}</div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:3px">
+              <span style="font-weight:700;color:var(--text)">${b.num}. ${b.title}</span>
+              <span class="badge ${s.rat?'b'+s.rat:'b0'}">${s.rat?LBL[s.rat]:'—'}</span>
+            </div>
+            ${selInds.length>0?`<div style="font-size:11px;color:var(--text2)">${selInds.join(' · ')}</div>`:''}
+            ${allEvs.length>0?`<div style="font-size:11px;color:var(--teal);margin-top:2px">الأدلة: ${allEvs.join(' · ')}</div>`:''}
+          </div>
+        </div>`;}).join('')}
+    </div>
+
+    ${str.length>0?`
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:var(--teal-light);font-size:18px">✨</div>
+        <div><div class="card-title">جوانب الإجادة في الأداء وأدلتها</div></div>
+      </div>
+      ${str.map(b=>b.exc.map(ex=>`<div class="exc-item">${b.ico} <strong>${b.title}:</strong> ${ex}</div>`).join('')).join('')}
+    </div>`:''}
+
+    ${devPri.length>0?`
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:var(--amber-light);font-size:18px">🎯</div>
+        <div><div class="card-title">الجوانب التي تحتاج إلى تطوير في الأداء وأدلتها</div></div>
+      </div>
+      ${devPri.map((b,i)=>`
+        <div class="prow">
+          <div class="prank" style="background:${{3:'#FEF3DC',4:'#FDECEA',5:'#FDEAEA'}[state[b.id].rat]||'var(--bg3)'}">${i+1}</div>
+          <div class="bnd-icon ${b.icoCls}" style="width:26px;height:26px;font-size:13px;border-radius:6px;flex-shrink:0">${b.ico}</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">${b.title}</div>
+            <div style="font-size:11px;color:var(--text3)">${b.devs[0]}</div>
+          </div>
+          <span class="badge b${state[b.id].rat}">${LBL[state[b.id].rat]}</span>
+        </div>`).join('')}
+    </div>`:''}
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:var(--navy-light);font-size:18px">📝</div>
+        <div><div class="card-title">الجمل التقييمية والتوصيات الإجرائية الشاملة</div></div>
+      </div>
+      ${BNDS.filter(b=>state[b.id].rat>0).map(b=>{
+        const s=state[b.id];
+        const allEvs=[...s.evs.map(i=>b.evs[i]),...s.customEvs].filter(Boolean);
+        const selInds=s.inds.map(i=>b.inds[i]).filter(Boolean);
+        const evText=allEvs.length>0?allEvs.slice(0,2).join(' و'):null;
+        const indText=selInds.length>0?selInds.slice(0,2).join(' و'):b.title;
+        const ev=evText?`، كما يتضح من ${evText}`:'';
+        const impact=s.rat<=2?'مما يُسهم في تجويد البيئة التعليمية المخبرية وتحقيق أهداف التعلم':s.rat===3?'مما يستدعي مزيدًا من المتابعة الإشرافية':'مما يؤثر سلبًا على جودة العملية التعليمية المخبرية';
+        const sent=`${VERBS[s.rat]} ${indText}${ev}، ${impact}.`;
+        const recIdx=Math.min(s.rat-1,b.recs.length-1);
+        return`<div style="margin-bottom:14px;padding:12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div class="bnd-icon ${b.icoCls}" style="width:28px;height:28px;font-size:13px;border-radius:7px;flex-shrink:0">${b.ico}</div>
+            <span style="font-size:12px;font-weight:700;color:var(--text2)">${b.num}. ${b.title}</span>
+            <span class="badge b${s.rat}">${LBL[s.rat]}</span>
+          </div>
+          <div class="lr-sent" style="margin-bottom:7px">${sent}</div>
+          <div class="rec-item">📌 ${b.recs[recIdx]||b.recs[0]}</div>
+        </div>`;}).join('')}
+    </div>
+
+    <div style="background:var(--navy-light);border-radius:var(--r-lg);padding:16px;margin-bottom:18px;border:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">📋 ملاحظات الزيارة | الدعم المقدم | التوصيات الختامية</div>
+      <textarea class="fi" rows="4" placeholder="اكتب ملاحظات الزيارة والدعم المقدم والتوصيات الختامية هنا..."></textarea>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" onclick="sw('visit')">← تعديل الزيارة</button>
+      <button class="btn btn-teal" onclick="window.print()">🖨️ طباعة التقرير</button>
+    </div>`;
+
+  sw('result');
+}
+
+function addSch(){
+  const n=document.getElementById('cs').value;if(!n)return;
+  const a=parseFloat(document.getElementById('ca').value)||3;
+  const s=parseInt(document.getElementById('csa').value)||0;
+  schools.push({n,a,s,pri:(s*35)+(a*12)});
+  schools.sort((a,b)=>b.pri-a.pri);
+  const bgc={1:'#E0F5EE',2:'#EAF5DE',3:'#FEF3DC',4:'#FDECEA',5:'#FDEAEA'};
+  const tcl={1:'var(--teal)',2:'var(--green)',3:'var(--amber)',4:'var(--coral)',5:'#5A0A0A'};
+  const icons=['✅','✅','⚠️','🔴','🔴'];
+
+  const plistCard=document.getElementById('plist');
+  plistCard.innerHTML=`
+    <div class="card-head">
+      <div class="card-icon" style="background:var(--sky-light);font-size:18px">📊</div>
+      <div><div class="card-title">خريطة الأولويات الإشرافية (${schools.length} مدارس)</div></div>
+    </div>
+    ${schools.some(x=>x.s>0)?'<div class="alert-danger" style="margin-bottom:12px">مدارس تستوجب تدخلاً عاجلاً في السلامة</div>':''}
+    ${schools.map((sc,i)=>{
+      const lv=sc.s>1?5:sc.a>=4?4:sc.a>=3?3:sc.a>=2?2:1;
+      return`<div class="prow">
+        <div class="prank" style="background:${bgc[lv]};color:${tcl[lv]}">${i+1}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:var(--text)">${sc.n}</div>
+          <div style="font-size:11px;color:var(--text3)">متوسط التقييم: ${sc.a}</div>
+        </div>
+        <span class="badge b${lv}">${LBL[lv]}</span>
+        ${sc.s>0?`<span style="font-size:12px;font-weight:700;color:var(--coral)">${icons[sc.s]} سلامة</span>`:''}
+      </div>`;}).join('')}`;
+
+  document.getElementById('cs').value='';
+  document.getElementById('ca').value='';
+}
+
+function resetAll(){
+  if(!confirm('هل تريد بدء زيارة جديدة؟ سيتم مسح جميع البيانات الحالية.'))return;
+  BNDS.forEach(b=>{state[b.id]={rat:0,inds:[],evs:[],customEvs:[]};});
+  document.getElementById('sname').value='';
+  buildBnds();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  });
+}
+
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById("install-btn").style.display="flex";
+});
+
+function installApp(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{
+    deferredPrompt=null;
+    document.getElementById("install-btn").style.display="none";
+  });
+}
+
+window.addEventListener("appinstalled",()=>{
+  document.getElementById("install-btn").style.display="none";
+});updProg();sw('visit');
+}
+
+buildBnds();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  });
+}
+
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById("install-btn").style.display="flex";
+});
+
+function installApp(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{
+    deferredPrompt=null;
+    document.getElementById("install-btn").style.display="none";
+  });
+}
+
+window.addEventListener("appinstalled",()=>{
+  document.getElementById("install-btn").style.display="none";
+});
+</script>
+<div id="install-btn" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1B3A6B,#2554A0);color:#fff;padding:13px 28px;border-radius:30px;cursor:pointer;font-family:Tajawal,sans-serif;font-size:14px;font-weight:700;box-shadow:0 8px 28px rgba(27,58,107,.45);align-items:center;gap:10px;z-index:999;border:none;" onclick="installApp()"><span style="font-size:18px">📲</span> تثبيت التطبيق على الجهاز</div>
+<style>
+@keyframes pulse{0%,100%{box-shadow:0 8px 28px rgba(27,58,107,.45)}50%{box-shadow:0 8px 40px rgba(27,58,107,.7)}}
+#install-btn{animation:pulse 2s infinite}
+.topbar{padding-top:env(safe-area-inset-top);height:calc(68px + env(safe-area-inset-top))}
+.sidebar{top:calc(68px + env(safe-area-inset-top));height:calc(100vh - 68px - env(safe-area-inset-top))}
+</style>
+</body>
+</html>
